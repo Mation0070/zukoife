@@ -3,518 +3,320 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Zuko Obealor</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Digital garden: Zuko's essays on Africa, money, liberty and building.">
+<title>zuko.</title>
+<meta name="description" content="">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Inter:wght@400;500&display=swap">
 <style>
-/* Layout: a faithful copy of the Write. Framer template: one 640px column, #fafafa ground, Playfair headings, Inter text, hairline dividers */
-:root{
-  --bg:#fafafa; --ink:#000000; --text:#333333; --muted:#757575; --line:#d9d9d9; --field:#f0f0f0; --btn:#333333; --btnText:#ffffff; --toggle:#efefef;
-  --display:"Playfair Display",Georgia,"Times New Roman",serif;
-  --sans:"Inter",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111111;--ink:#ffffff;--text:#cccccc;--muted:#8a8a8a;--line:#2e2e2e;--field:#1c1c1c;--btn:#e6e6e6;--btnText:#111111;--toggle:#222222;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#111111;--ink:#ffffff;--text:#cccccc;--muted:#8a8a8a;--line:#2e2e2e;--field:#1c1c1c;--btn:#e6e6e6;--btnText:#111111;--toggle:#222222;color-scheme:dark}
-
+/* Structure only. All text lives in content.js */
+:root{--bg:#fafafa;--ink:#000;--text:#333;--muted:#757575;--line:#d9d9d9;--field:#f0f0f0;--btn:#333;--btnText:#fff;--toggle:#efefef;
+--display:"Playfair Display",Georgia,"Times New Roman",serif;--sans:"Inter",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111;--ink:#fff;--text:#ccc;--muted:#8a8a8a;--line:#2e2e2e;--field:#1c1c1c;--btn:#e6e6e6;--btnText:#111;--toggle:#222;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111;--ink:#fff;--text:#ccc;--muted:#8a8a8a;--line:#2e2e2e;--field:#1c1c1c;--btn:#e6e6e6;--btnText:#111;--toggle:#222;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 var(--sans);-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
 a{color:inherit;text-decoration:none}
 button,input,textarea{font:inherit}
 :focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 h1,h2,h3{font-family:var(--display);font-weight:400;color:var(--ink);margin:0;text-wrap:balance}
 .col{max-width:680px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+[hidden]{display:none!important}
 
-/* header */
 header{position:relative;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
 header .col{display:flex;align-items:center;justify-content:space-between;height:71px}
-.logo{font-family:var(--display);font-size:24px;line-height:1.3;color:var(--ink)}
+.logo{font-family:var(--display);font-size:24px;line-height:1.3;color:var(--ink);transition:letter-spacing .4s}
+.logo:hover{letter-spacing:.04em}
 .right{display:flex;align-items:center;gap:36px}
 nav.links{display:flex;gap:24px}
 nav.links a{font-size:16px;color:var(--text);transition:color .2s}
 nav.links a:hover,nav.links a.on{color:var(--ink)}
-.round{width:40px;height:40px;border-radius:50%;border:0;background:var(--toggle);display:grid;place-items:center;cursor:pointer;padding:0}
+.round{width:40px;height:40px;border-radius:50%;border:0;background:var(--toggle);display:grid;place-items:center;cursor:pointer;padding:0;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
 .round svg{width:16px;height:16px;fill:var(--ink)}
-.menu{display:none;background:transparent;width:32px;height:40px;border:0;padding:0;cursor:pointer;place-items:center;color:var(--ink)}
+#theme:hover{transform:rotate(-35deg) scale(1.06)}
+#theme.spin svg{animation:spin .6s cubic-bezier(.2,.7,.2,1)}
+@keyframes spin{from{transform:rotate(-180deg) scale(.4);opacity:0}to{transform:none;opacity:1}}
+.menu{display:none;background:transparent;width:32px;height:40px;border:0;padding:0;cursor:pointer;place-items:center}
 .menu svg{width:22px;height:22px;stroke:var(--ink);stroke-width:1.6;fill:none}
 .menu .x{display:none}.menu.open .x{display:block}.menu.open .bars{display:none}
 @media(max-width:700px){
-  .right{gap:10px}
-  nav.links{position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:var(--bg);border-bottom:1px solid var(--line);padding:0 max(20px,env(safe-area-inset-right,0px)) 14px max(20px,env(safe-area-inset-left,0px));display:flex;visibility:hidden;opacity:0;transform:translateY(-8px);transition:opacity .3s,transform .3s,visibility .3s}
-  nav.links.open{visibility:visible;opacity:1;transform:none}
-  nav.links a{padding:8px 0;font-family:var(--display);font-size:22px;line-height:1.5;color:var(--text)}
-  header.menu-open{border-bottom-color:transparent}
-  .menu{display:grid}
+ .right{gap:10px}
+ nav.links{position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:var(--bg);border-bottom:1px solid var(--line);padding:0 max(20px,env(safe-area-inset-right,0px)) 14px max(20px,env(safe-area-inset-left,0px));visibility:hidden;opacity:0;transform:translateY(-8px);transition:opacity .3s,transform .3s,visibility .3s}
+ nav.links.open{visibility:visible;opacity:1;transform:none}
+ nav.links a{padding:8px 0;font-family:var(--display);font-size:22px;line-height:1.5}
+ header.menu-open{border-bottom-color:transparent}
+ .menu{display:grid}
 }
 
-/* views */
 .view{display:none;padding-block:100px 0}
-.view.on{display:block;animation:fade .6s ease}
-@keyframes fade{from{opacity:.2;transform:translateY(10px)}to{opacity:1;transform:none}}
-.pagehead{padding-bottom:24px;border-bottom:1px solid var(--line);margin-bottom:24px}
+.view.on{display:block}
+.pagehead{padding-bottom:24px;border-bottom:1px solid var(--line);margin-bottom:24px;position:relative}
 .pagehead h1{font-size:48px;line-height:1.2}
 .pagehead p{margin:10px 0 0}
 @media(max-width:560px){.pagehead h1{font-size:38px}}
+.empty{color:var(--muted);font-size:16px;padding:8px 0}
 
-/* post list */
 .posts{list-style:none;margin:0;padding:0}
-.posts li{border-bottom:1px solid var(--line)}
-.posts a{display:block;padding:32px 0 24px}
-.tags{display:flex;gap:20px;font-size:14px;color:var(--muted);line-height:1.4}
-.posts h3{font-size:24px;line-height:1.2;margin:16px 0 8px;transition:opacity .2s}
-.posts a:hover h3{opacity:.6}
-.posts p{margin:0;font-size:16px}
+.posts li{border-bottom:1px solid var(--line);position:relative}
+.posts a{display:block;padding:32px 0 24px;position:relative}
+.tags{display:flex;gap:20px;font-size:14px;color:var(--muted);line-height:1.4;flex-wrap:wrap}
+.posts h3{font-size:24px;line-height:1.2;margin:16px 0 8px;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.posts p{margin:0}
 .meta{display:flex;gap:20px;font-size:14px;color:var(--muted);margin-top:16px;line-height:1.4}
 .archive .posts h3{margin-bottom:0}
+.posts a:hover h3{transform:translateX(8px)}
+.posts a::after{content:"\2192";position:absolute;right:4px;top:50%;font-size:20px;color:var(--ink);opacity:0;transform:translate(-10px,-50%);transition:.35s cubic-bezier(.2,.7,.2,1)}
+.posts a:hover::after{opacity:1;transform:translate(0,-50%)}
+.posts li::before{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:100%;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.6,0,.2,1)}
+.posts li:hover::before{transform:scaleX(1)}
 
-.soft{display:inline-block;margin-top:32px;padding:8px 10px;background:var(--field);color:var(--text);border:0;border-radius:3px;cursor:pointer;font-size:16px}
-.soft:hover{color:var(--ink)}
+.soft{display:inline-block;margin-top:32px;padding:8px 10px;background:var(--field);color:var(--text);border:0;border-radius:3px;cursor:pointer;font-size:16px;transition:transform .25s}
+.soft:hover{color:var(--ink);transform:translateY(-2px)}
 h2.sec{font-size:20px;margin:56px 0 20px}
+h2.label{font:500 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:40px 0 0}
 .chips{display:flex;flex-wrap:wrap;gap:12px}
-.chip{padding:6px 11px;border:1px solid var(--line);border-radius:3px;background:transparent;color:var(--text);font-size:16px;cursor:pointer;transition:border-color .2s}
-.chip:hover{border-color:var(--muted)}
+.chip{padding:6px 11px;border:1px solid var(--line);border-radius:3px;background:transparent;color:var(--text);font-size:16px;cursor:pointer;transition:transform .25s,border-color .2s}
+.chip:hover{border-color:var(--muted);transform:translateY(-2px)}
 .chip.on{background:var(--field)}
 
-/* prose */
-.prose p{margin:0 0 20px;font-size:16px;line-height:1.6}
-.prose h4{font:400 16px/1.5 var(--sans);color:var(--ink);margin:30px 0 20px}
+.prose p{margin:0 0 20px;line-height:1.6}
+.prose h2{font-size:26px;margin:36px 0 16px}
+.prose h3{font-size:20px;margin:28px 0 12px}
 .prose ul{margin:0 0 24px;padding-left:22px}
-.prose li{margin-bottom:24px;line-height:1.6}
-.prose em{font-style:italic}
+.prose li{margin-bottom:12px;line-height:1.6}
+.prose blockquote{margin:28px 0;padding-left:20px;border-left:2px solid var(--ink);font-family:var(--display);font-style:italic;font-size:22px;line-height:1.4;color:var(--ink)}
+.prose a{border-bottom:1px solid var(--muted)}
+.prose strong{color:var(--ink);font-weight:500}
 
-/* article */
 .crumb{font-size:14px;color:var(--ink);margin-bottom:40px}
-.crumb a:hover{opacity:.6}
-article .tags{color:var(--text)}
 article h1{font-size:48px;line-height:1.2;margin:18px 0 12px}
 @media(max-width:560px){article h1{font-size:36px}}
+article .tags{color:var(--text)}
 article .meta{margin-top:0;padding-bottom:24px;border-bottom:1px solid var(--line);margin-bottom:24px}
-article .lead{color:var(--ink)}
+article .prose>p:first-child{color:var(--ink)}
 .pn{display:flex;justify-content:space-between;gap:20px;padding:40px 0;border-block:1px solid var(--line);margin-top:20px}
 .pn a{display:block;max-width:48%}
 .pn small{display:block;font-size:14px;color:var(--muted)}
-.pn span{font-family:var(--display);font-size:16px;color:var(--text)}
-.pn a:hover span{color:var(--ink)}
+.pn span{font-family:var(--display);color:var(--text)}
 .pn .next{text-align:right;margin-left:auto}
 .also{list-style:none;padding:0;margin:0}
 .also a{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
-.also b{font-family:var(--display);font-weight:400;font-size:16px;color:var(--text)}
-.also a:hover b{color:var(--ink)}
+.also b{font-family:var(--display);font-weight:400;color:var(--text);transition:padding .3s}
+.also a:hover b{padding-left:6px;color:var(--ink)}
 .also span{font-size:12px;color:var(--muted);white-space:nowrap}
+.progress{position:fixed;top:0;left:0;height:2px;width:100%;background:var(--ink);transform:scaleX(0);transform-origin:left;z-index:40}
 
-/* resources */
-.res{display:grid;grid-template-columns:67px 1fr;gap:10px;padding:0 0 14px;margin-bottom:14px;border-bottom:1px solid var(--line)}
-.cover{width:67px;max-width:100%;aspect-ratio:2/3;background:var(--ink);color:var(--bg);font-family:var(--display);font-size:9px;line-height:1.2;padding:6px;display:flex;align-items:flex-end;border-radius:1px}
-.res h3{font-size:19px;line-height:1.3}
-.res .by{font-size:12px;color:var(--text);margin:4px 0 10px}
-.res p{margin:0;font-size:12.5px;line-height:1.5}
+.res{display:grid;grid-template-columns:67px 1fr;gap:10px;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--line)}
+.cover{width:67px;aspect-ratio:2/3;background:var(--ink);color:var(--bg);font-family:var(--display);font-size:9px;line-height:1.2;padding:6px;display:flex;align-items:flex-end;transition:transform .4s}
+.res:hover .cover{transform:rotate(-4deg) translateY(-3px)}
+.res h3{font-size:19px}
+.res .by{font-size:12px;margin:4px 0 10px}
+.res p{margin:0;font-size:13px}
 .tool{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
 .tool b{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:400;font-size:19px;color:var(--ink)}
-.tool i{width:18px;height:18px;border-radius:50%;background:var(--ink);display:inline-block}
-.tool span{font-size:12px;color:var(--text)}
+.tool i{width:18px;height:18px;border-radius:50%;background:var(--ink)}
+.tool span{font-size:12px}
 
-/* forms */
-label{display:block;font-size:16px;color:var(--text);margin:20px 0 8px}
+label{display:block;margin:20px 0 8px}
 input,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:3px;background:var(--field);color:var(--ink);font-size:16px}
-input::placeholder,textarea::placeholder{color:var(--text)}
 input:focus,textarea:focus{outline:none;border-color:var(--muted)}
 textarea{min-height:140px;resize:vertical}
 .sendbtn{width:100%;margin-top:20px;padding:9px;border:1px solid var(--line);border-radius:3px;background:var(--field);color:var(--text);cursor:pointer}
-.sendbtn:hover{color:var(--ink);border-color:var(--muted)}
 .note{font-size:14px;color:var(--muted);margin-top:12px;min-height:20px;overflow-wrap:anywhere}
-
-/* stay in touch */
 .touch{margin-top:48px;padding-top:56px;border-top:1px solid var(--line)}
 .touch h2{font-size:20px}
 .touch p{margin:6px 0 24px}
 .sub{display:flex;gap:12px;max-width:400px}
 .sub input{flex:1;min-width:0;padding:12px}
-.sub button{padding:0 11px;border:0;border-radius:3px;background:var(--btn);color:var(--btnText);cursor:pointer;font-size:16px}
+.sub button{padding:0 11px;border:0;border-radius:3px;background:var(--btn);color:var(--btnText);cursor:pointer;transition:transform .25s}
+.sub button:hover{transform:translateY(-2px)}
 
-footer{margin-top:72px;border-top:1px solid var(--line)}
-footer .col{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-block:22px;font-size:14px;color:var(--ink)}
-footer nav{display:flex;gap:24px}
-footer nav a:hover{opacity:.6}
-/* motion */
-@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-@keyframes word{from{opacity:0;transform:translateY(.45em);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
-@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-.view.on .pagehead h1 .w{display:inline-block;animation:word .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i)*55ms)}
-.view.on .pagehead{position:relative;border-bottom-color:transparent}
-.view.on .pagehead::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--line);transform-origin:left;animation:grow 1s .25s cubic-bezier(.6,0,.2,1) both}
-.view.on .pagehead p{animation:up .7s .35s both}
-.view.on .posts li,.view.on .prose>*,.view.on .res,.view.on .tool,.view.on .chips,.view.on form,.view.on .soft,.view.on h2.sec{animation:up .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(.35s + var(--d,0)*70ms)}
-.posts a{position:relative}
-.posts h3{transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .2s}
-.posts a:hover h3{opacity:1;transform:translateX(8px)}
-.posts a::after{content:"\2192";position:absolute;right:4px;top:50%;font-size:20px;color:var(--ink);opacity:0;transform:translate(-10px,-50%);transition:.35s cubic-bezier(.2,.7,.2,1)}
-.posts a[href]:hover::after{opacity:1;transform:translate(0,-50%)}
-.posts li{position:relative}
-.posts li::before{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:100%;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.6,0,.2,1)}
-.posts li:hover::before{transform:scaleX(1)}
-nav.links a{position:relative}
-.logo{transition:letter-spacing .4s ease}
-.logo:hover{letter-spacing:.04em}
-.round{transition:transform .5s cubic-bezier(.2,.7,.2,1),background .2s}
-#theme:hover{transform:rotate(-35deg) scale(1.06)}
-#theme.spin svg{animation:spin .6s cubic-bezier(.2,.7,.2,1)}
-@keyframes spin{from{transform:rotate(-180deg) scale(.4);opacity:0}to{transform:none;opacity:1}}
-.chip{transition:transform .25s,border-color .2s,background .2s}
-.chip:hover{transform:translateY(-2px)}
-.soft,.sub button,.sendbtn{transition:transform .25s,background .2s,color .2s}
-.soft:hover,.sub button:hover{transform:translateY(-2px)}
-.progress{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:2px;width:100%;background:var(--ink);transform:scaleX(0);transform-origin:left;z-index:40}
-.res .cover{transition:transform .4s cubic-bezier(.2,.7,.2,1)}
-.res:hover .cover{transform:rotate(-4deg) translateY(-3px)}
-.tool i{transition:transform .3s}
-.tool:hover i{transform:scale(1.3)}
-.also b{transition:padding .3s}
-.also a:hover b{padding-left:6px}
-/* hero extras */
-@keyframes drop{from{transform:translateY(-100%)}to{transform:none}}
-.hello{display:flex;align-items:center;gap:10px;font-size:15px;color:var(--text);margin-bottom:22px;animation:up .7s .1s both}
-.av{width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-family:var(--display);font-size:17px;flex:none}
-.wave{display:inline-block;transform-origin:70% 70%;animation:wave 2.4s 1s ease-in-out infinite}
-@keyframes wave{0%,60%,100%{transform:rotate(0)}10%,30%{transform:rotate(16deg)}20%,40%{transform:rotate(-8deg)}}
-.hero h1{font-size:56px;line-height:1.12;animation:up .8s .15s cubic-bezier(.2,.7,.2,1) both}
+.hello{display:flex;align-items:center;gap:10px;font-size:15px;margin-bottom:22px}
+.hero h1{font-size:56px;line-height:1.12}
 @media(max-width:560px){.hero h1{font-size:40px}}
 .rot{display:inline-grid;vertical-align:bottom;overflow:hidden;padding-bottom:.08em}
 .rot span{grid-area:1/1;font-style:italic;opacity:0;transform:translateY(100%);transition:transform .7s cubic-bezier(.7,0,.2,1),opacity .5s}
 .rot span.on{opacity:1;transform:none}
 .rot span.out{opacity:0;transform:translateY(-100%)}
-.marquee{overflow:hidden;border-bottom:1px solid var(--line);padding:16px 0;margin:-24px 0 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.marquee{overflow:hidden;border-bottom:1px solid var(--line);padding:16px 0;margin-top:-24px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
 .track{display:flex;width:max-content;animation:slide 32s linear infinite}
 .marquee:hover .track{animation-play-state:paused}
-.track span{font-family:var(--display);font-style:italic;font-size:18px;color:var(--muted);padding:0 22px;white-space:nowrap;position:relative}
-.track span::after{content:"\2726";position:absolute;right:-6px;font-style:normal;font-size:10px;top:50%;transform:translateY(-50%);color:var(--line)}
+.track span{font-family:var(--display);font-style:italic;font-size:18px;color:var(--muted);padding:0 22px;white-space:nowrap}
 @keyframes slide{to{transform:translateX(-50%)}}
-.nowbar{display:flex;align-items:center;gap:14px;margin:28px 0 8px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--bg);transition:border-color .3s,transform .3s}
-.nowbar:hover{border-color:var(--ink);transform:translateY(-2px)}
-.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);flex:none}
-.live i{width:8px;height:8px;border-radius:50%;background:#22a06b;position:relative}
-.live i::after{content:"";position:absolute;inset:0;border-radius:50%;background:#22a06b;animation:ping 1.8s ease-out infinite}
-@keyframes ping{to{transform:scale(2.8);opacity:0}}
-.nowtext{font-size:15px;color:var(--text);min-width:0;flex:1}
-.go{color:var(--ink);transition:transform .3s;flex:none}
-.nowbar:hover .go,.bcard:hover .go{transform:translateX(5px)}
-h2.sec.label{font:500 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:40px 0 0}
-#home-posts li:first-child h3{font-size:30px}
 
-/* building cards */
 .build{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.bcard{position:relative;display:block;padding:22px;border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0;transition:border-color .3s,transform .4s cubic-bezier(.2,.7,.2,1),color .3s}
-.bcard::before{content:"";position:absolute;inset:0;background:var(--ink);transform:translateY(101%);transition:transform .5s cubic-bezier(.7,0,.2,1);z-index:0}
-.bcard>*{position:relative;z-index:1;transition:color .3s}
+.bcard{position:relative;display:block;padding:22px;border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0;transition:border-color .3s,transform .4s cubic-bezier(.2,.7,.2,1)}
+.bcard::before{content:"";position:absolute;inset:0;background:var(--ink);transform:translateY(101%);transition:transform .5s cubic-bezier(.7,0,.2,1)}
+.bcard>*{position:relative;transition:color .3s}
 .bcard:hover{transform:translateY(-3px);border-color:var(--ink)}
 .bcard:hover::before{transform:none}
-.bcard:hover h3,.bcard:hover p,.bcard:hover small,.bcard:hover .go{color:var(--bg)}
+.bcard:hover *{color:var(--bg)}
 .bcard small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .bcard h3{font-size:22px;margin:8px 0 6px}
-.bcard p{margin:0;font-size:14px;line-height:1.55;padding-right:20px}
-.bcard .go{position:absolute;right:18px;top:20px}
+.bcard p{margin:0;font-size:14px;line-height:1.55}
 @media(max-width:560px){.build{grid-template-columns:1fr}}
 
-/* scroll reveal: only hidden once JS confirms it's below the fold */
-.reveal.wait{opacity:0;transform:translateY(26px)}
-.reveal{transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1),border-color .3s,color .3s}
-
-/* footer wordmark */
 .wordmark{display:flex;justify-content:center;font-family:var(--display);font-size:clamp(90px,26vw,220px);line-height:.9;color:var(--ink);margin-top:90px;overflow:hidden;user-select:none;letter-spacing:-.03em}
 .wordmark span{display:inline-block;transform:translateY(105%);transition:transform 1s cubic-bezier(.2,.7,.2,1)}
 .wordmark.in span{transform:none}
-.wordmark span:nth-child(2){transition-delay:.06s}.wordmark span:nth-child(3){transition-delay:.12s}.wordmark span:nth-child(4){transition-delay:.18s}.wordmark span:nth-child(5){transition-delay:.24s}
-.wordmark span:hover{font-style:italic}
-footer{margin-top:0}
 .totop{position:fixed;right:calc(20px + env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:18px;cursor:pointer;opacity:0;transform:translateY(16px) scale(.8);pointer-events:none;transition:.4s cubic-bezier(.2,.7,.2,1);z-index:25}
 .totop.show{opacity:1;transform:none;pointer-events:auto}
 .totop:hover{background:var(--ink);color:var(--bg)}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rot span{display:none}.rot span.on{display:inline}.wordmark span{transform:none}.reveal.wait{opacity:1;transform:none}}
+footer{border-top:1px solid var(--line)}
+footer .col{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-block:22px;font-size:14px;color:var(--ink)}
+footer nav{display:flex;gap:24px;flex-wrap:wrap}
+
+/* entrance motion */
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes word{from{opacity:0;transform:translateY(.45em);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.view.on .pagehead h1 .w{display:inline-block;animation:word .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i)*55ms)}
+.view.on .pagehead{border-bottom-color:transparent}
+.view.on .pagehead::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--line);transform-origin:left;animation:grow 1s .25s cubic-bezier(.6,0,.2,1) both}
+.view.on .anim{animation:up .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(.3s + var(--d,0)*70ms)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.wordmark span{transform:none}}
 </style>
 </head>
 <body>
-
 <div class="progress" id="progress"></div>
 <header id="hdr"><div class="col">
-  <a class="logo" href="#home">zuko.</a>
+  <a class="logo" id="logo" href="#home"></a>
   <div class="right">
     <nav class="links" id="links">
-      <a href="#now" data-v="now">Now</a>
-      <a href="#about" data-v="about">About</a>
-      <a href="#archive" data-v="archive">Archive</a>
-      <a href="#resources" data-v="resources">Resources</a>
-      <a href="#contact" data-v="contact">Contact</a>
+      <a href="#now" data-v="now">Now</a><a href="#about" data-v="about">About</a><a href="#archive" data-v="archive">Archive</a><a href="#resources" data-v="resources">Resources</a><a href="#contact" data-v="contact">Contact</a>
     </nav>
     <button class="round" id="theme" aria-label="Switch light or dark mode"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
-    <button class="menu" id="menu" aria-label="Open menu" aria-expanded="false"><svg class="bars" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <button class="menu" id="menu" aria-label="Open menu"><svg class="bars" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
 </div></header>
 
-<main class="col">
+<main class="col" id="main"></main>
 
-<section class="view" id="v-home">
-  <div class="pagehead hero">
-    <div class="hello"><span class="av">Z</span><span>Hi, I'm Zuko <span class="wave">&#128075;</span></span></div>
-    <h1 data-nosplit>Digital garden: my notes on <span class="rot" id="rot"><span class="on">Africa.</span><span>money.</span><span>liberty.</span><span>building.</span></span></h1>
-    <p>Essays on political economy, institutions, liberty and the long game, from Enugu, Nigeria.</p>
-  </div>
-  <div class="marquee" aria-hidden="true"><div class="track">
-    <span>Political economy</span><span>Austrian economics</span><span>Sovereign wealth</span><span>Power &amp; logistics</span><span>Narrative history</span><span>Institutions</span><span>Building in Africa</span>
-    <span>Political economy</span><span>Austrian economics</span><span>Sovereign wealth</span><span>Power &amp; logistics</span><span>Narrative history</span><span>Institutions</span><span>Building in Africa</span>
-  </div></div>
-  <h2 class="sec label">Latest essays</h2>
-  <ul class="posts" id="home-posts"></ul>
-  <button class="soft" id="more">Load More</button>
-  <h2 class="sec">Topics</h2>
-  <div class="chips" id="home-topics"></div>
-  <h2 class="sec">What I'm building</h2>
-  <div class="build">
-    <a class="bcard reveal" href="#about"><small>Agency</small><h3>Aven Media</h3><p>Launch videos, demos, 2D explainers and ad creatives for startups.</p><span class="go">&rarr;</span></a>
-    <a class="bcard reveal" href="#about"><small>Product</small><h3>Sweven</h3><p>Photo and video storage you can search the way you talk.</p><span class="go">&rarr;</span></a>
-    <a class="bcard reveal" href="#about"><small>Infrastructure</small><h3>Gadaffi</h3><p>Data intelligence and security infrastructure for Africa.</p><span class="go">&rarr;</span></a>
-    <a class="bcard reveal" href="#about"><small>Long game</small><h3>A university</h3><p>A research university that supplies talent to African industry.</p><span class="go">&rarr;</span></a>
-  </div>
-</section>
-
-<section class="view" id="v-now">
-  <div class="pagehead"><h1>Now</h1></div>
-  <div class="prose">
-    <p>Last updated: November 7th, 2026</p>
-    <h4>What I'm focused on:</h4>
-    <p>Getting Aven Media off the ground with three friends. We make launch videos, product demos, 2D explainers and ad creatives for startups in the US, UK and EU. Right now that means finding the right designers, editors and animators.</p>
-    <h4>What I'm writing:</h4>
-    <ul>
-      <li>Scripts and content for founder-led brands and tech companies.</li>
-      <li>Essays for this site on African money, institutions and infrastructure.</li>
-    </ul>
-    <h4>What I'm learning:</h4>
-    <p>Python. I want to build the things I write about. I'm also finishing med school.</p>
-    <h4>What I'm thinking about:</h4>
-    <p>Why Nigeria still can't keep the lights on. It's not an engineering mystery. It's a question of who owns what, who pays whom, and why nobody has a reason to fix it.</p>
-    <h4>What I'm not doing:</h4>
-    <p>Taking work I don't believe in. Saying yes to every idea. Pretending a ten-year plan fits in a quarter.</p>
-  </div>
-</section>
-
-<section class="view" id="v-about">
-  <div class="pagehead"><h1>About</h1></div>
-  <div class="prose">
-    <p><em>zuko.</em> is where I think out loud about how a continent gets built.</p>
-    <p>My name's Zukoifechukwu Obealor. I live in Enugu, Nigeria, and I'm in medical school. I don't plan to practice. I'll finish the degree, but I've known for a while that I'm an entrepreneur first.</p>
-    <p>I pay the bills with words. I'm a content strategist, scriptwriter and conversion copywriter for tech companies, AI startups and founder-led brands. I've written launch scripts, ghostwritten for founders, covered YC companies, and built ad concepts for DTC brands.</p>
-    <p>No fluff. No hot takes for clicks. Just writing.</p>
-    <p>Africa isn't poor because it can't do better. It's poor because a lot of systems were built to take value out of it. That idea sits under almost everything I write here. From colonial trade to the CFA franc, the pattern keeps showing up.</p>
-    <p>Fixing it takes institutions, infrastructure and capital, and it takes decades. So I try to think in decades.</p>
-    <p>You'll find essays on African political economy, Austrian economics, money and sovereign wealth, power and logistics, and narrative history.</p>
-    <p>I'm building too. Aven Media, a video and creative agency. Sweven, photo and video storage you can search the way you talk. Gadaffi, data intelligence infrastructure for Africa. And someday, a research university in Nigeria that can stand next to the best in the world.</p>
-    <p>It's a long list. That's the point.</p>
-    <p>Thanks for being here.</p>
-  </div>
-</section>
-
-<section class="view archive" id="v-archive">
-  <div class="pagehead"><h1>Archive</h1></div>
-  <div class="prose"><p>Browse by theme. Each category gathers essays around one thread: money, institutions, liberty, building. Pick the one that speaks to you right now.</p></div>
-  <div class="chips" id="filters" style="margin:16px 0 8px"></div>
-  <ul class="posts" id="archive-posts"></ul>
-</section>
-
-<section class="view" id="v-resources">
-  <div class="pagehead"><h1>Resources</h1></div>
-  <div class="prose"><p>Books and tools that shaped how I think and work.</p><p>These are the ones I keep going back to.</p></div>
-  <div class="chips" style="margin:24px 0 40px"><a class="chip" href="#books">Books</a><a class="chip" href="#tools">Tools</a></div>
-  <h2 class="sec" id="books" style="margin-top:0;font-size:16px">Books I recommend:</h2>
-  <div class="res"><div class="cover">The Road to Serfdom</div><div><h3>The Road to Serfdom</h3><div class="by">by F. A. Hayek</div><p>Why central planning, even with good intentions, ends up taking freedom away.</p></div></div>
-  <div class="res"><div class="cover">Human Action</div><div><h3>Human Action</h3><div class="by">by Ludwig von Mises</div><p>Economics built from how people actually choose and act.</p></div></div>
-  <div class="res"><div class="cover">Money, Bank Credit &amp; Economic Cycles</div><div><h3>Money, Bank Credit, and Economic Cycles</h3><div class="by">by Jesús Huerta de Soto</div><p>How credit expansion creates booms that end in busts.</p></div></div>
-  <div class="res"><div class="cover">Nineteen Eighty-Four</div><div><h3>Nineteen Eighty-Four</h3><div class="by">by George Orwell</div><p>Still the best warning about what control does to language and thought.</p></div></div>
-  <h2 class="sec" id="tools" style="font-size:16px">Tools I use:</h2>
-  <div class="tool"><b><i></i>Claude</b><span>Thinking</span></div>
-  <div class="tool"><b><i></i>Figma</b><span>Design</span></div>
-  <div class="tool"><b><i></i>Python</b><span>Building</span></div>
-  <div class="tool"><b><i></i>Google Docs</b><span>Writing</span></div>
-</section>
-
-<section class="view" id="v-contact">
-  <div class="pagehead"><h1>Contact</h1></div>
-  <div class="prose">
-    <p>Have a project in mind or just want to connect?</p>
-    <p>I'm open to scriptwriting, content strategy and ad creative work, and I like talking to anyone building in Africa.</p>
-    <p>Let's build something that lasts.</p>
-  </div>
-  <form id="form" style="margin-top:36px">
-    <label for="f-name">Name</label><input id="f-name" required placeholder="Your name">
-    <label for="f-email">Email</label><input id="f-email" type="email" required placeholder="you@email.com">
-    <label for="f-msg">Message</label><textarea id="f-msg" required placeholder="Your message"></textarea>
-    <button class="sendbtn" type="submit">Send Message</button>
-    <div class="note" id="note"></div>
-  </form>
-</section>
-
-<section class="view" id="v-post"><article id="article"></article></section>
-
-<section class="view" id="v-scripts">
-  <div class="pagehead"><h1>Scriptwriting</h1><p>Short-form, launch and personal-brand scripts for founders, startups and creators.</p></div>
-  <ul class="posts">
-    <li><a><div class="tags"><span>Personal Brand Launch</span></div><h3>Scriptwriter, then quality head</h3><p>Moved up from writing scripts to reviewing them and leading the other writers. Most of this work is under NDA.</p></a></li>
-    <li><a><div class="tags"><span>The European Kid</span></div><h3>Character-driven social content</h3><p>Scripts for a character-led social media brand.</p></a></li>
-    <li><a><div class="tags"><span>AddX Studio</span></div><h3>Product and launch scripts</h3><p>Including work for HyperRep, an AI sales platform.</p></a></li>
-    <li><a><div class="tags"><span>PromptQL</span></div><h3>Launch script</h3><p>A launch script for a team AI product.</p></a></li>
-    <li><a><div class="tags"><span>Silicon Mania</span></div><h3>Tech writing</h3><p>Articles on YC companies, plus original show concepts.</p></a></li>
-  </ul>
-  <a class="soft" href="#contact">Get in touch</a>
-</section>
-
-<section class="view" id="v-ads">
-  <div class="pagehead"><h1>Creative strategy</h1><p>Paid social creative and direct response copy for DTC brands.</p></div>
-  <ul class="posts">
-    <li><a><div class="tags"><span>Perfect White Tee</span></div><h3>About $200K in attributed revenue</h3><p>Static concepts and copy.</p></a></li>
-    <li><a><div class="tags"><span>Elehear</span></div><h3>DR copy and concepts</h3><p>Hearing aids.</p></a></li>
-    <li><a><div class="tags"><span>KittySpout</span></div><h3>Hooks and angles</h3><p>Pet products.</p></a></li>
-    <li><a><div class="tags"><span>Care Copenhagen</span></div><h3>Beauty statics</h3><p>Static ad concepts for a beauty brand.</p></a></li>
-  </ul>
-  <a class="soft" href="#contact">Get in touch</a>
-</section>
-
-<section class="touch" id="touch">
-  <h2>Stay in touch</h2>
-  <p>Occasional essays on Africa, money and building.</p>
-  <form class="sub" id="subform"><input id="sub-email" type="email" required placeholder="name@email.com" aria-label="Your email"><button type="submit">Subscribe</button></form>
-  <div class="note" id="subnote"></div>
-</section>
-</main>
-
-<div class="col"><div class="wordmark" id="wordmark" aria-hidden="true"><span>z</span><span>u</span><span>k</span><span>o</span><span>.</span></div></div>
+<div class="col"><div class="wordmark" id="wordmark" aria-hidden="true"></div></div>
 <button class="totop" id="totop" aria-label="Back to top">&uarr;</button>
-<footer><div class="col">
-  <span>&copy; zuko | all rights reserved | 2026</span>
-  <nav><a href="#about">About</a><a href="#archive">Essays</a><a href="#contact">Contact</a></nav>
-</div></footer>
+<footer><div class="col"><span id="foot"></span><nav id="footlinks"></nav></div></footer>
 
+<script src="content.js"></script>
 <script>
-const EMAIL="zukkyzenith007@gmail.com";
-const POSTS=[
-{slug:"extraction",title:"Extraction Isn't an Accident",dek:"Africa's poverty was built. That means it can be unbuilt.",tags:["Africa","Money"],date:"Nov 6, 2026",read:5,body:`
-<p class="lead">People talk about Africa's poverty like it's weather. Something that just happens to the continent. Bad luck, bad leaders, bad geography. I don't buy it.</p>
-<p>When you look closely, you keep finding systems that were designed to move value out. Colonial trade was set up so raw materials left and finished goods came back at a markup. Railways ran from mines to ports, not from city to city. That's not a network. That's a pipe.</p>
-<p>The pipes didn't all close at independence. Take the CFA franc. Fourteen countries still use currencies whose rules were written in Paris, and for decades a big share of their reserves sat in the French treasury. You can argue about the details, but it's hard to call that monetary sovereignty.</p>
-<p>Here's why this matters. If the problem was that Africans couldn't do better, there'd be nothing to fix. But if the problem is design, then the answer is better design. Who owns the power plants. Who controls the currency. Who builds the roads and where they go.</p>
-<p>That's a more hopeful story, not a sadder one. Systems built by people can be rebuilt by people. It just takes longer than anyone wants.</p>`},
-{slug:"liberty",title:"Digital Interventionism and the Cost of Liberty",dek:"Control written into software is control you can't take back.",tags:["Economics","Liberty"],date:"Oct 20, 2026",read:6,body:`
-<p class="lead">Every government wants to know more and steer more. That isn't new. What's new is that the steering now gets written into code: payment rails, ID systems, platforms that touch every part of your day.</p>
-<p>Hayek's point was simple. The knowledge that runs an economy is scattered across millions of people. No planner can gather it, because most of it lives in local, changing, unspoken detail. Mises made the same point from another angle. Without real prices, you can't calculate.</p>
-<p>Digital intervention makes the old mistake harder to undo. A law can be repealed in a session. A national system that every bank, shop and phone depends on can't just be switched off. Once the control is in the plumbing, it stays.</p>
-<p>I wrote a longer version of this argument for the Youth Liberty Prize 2026, drawing on Hayek, Mises, Huerta de Soto, Hoppe, Rothbard, Mill and Orwell. The short version is this. Be careful what you build, because you'll live inside it.</p>`},
-{slug:"norway",title:"What Norway Got Right",dek:"Oil money, boring rules, and why both matter.",tags:["Institutions","Money"],date:"Sep 28, 2026",read:4,body:`
-<p class="lead">Norway and Nigeria both found oil. One built the biggest sovereign wealth fund in the world. The other spent decades importing its own fuel.</p>
-<p>The difference isn't the oil. It's the rules around it. Norway put its oil money in a fund, invested it abroad, and set a rule that the government can only spend about the fund's expected real return each year. Politicians hate that kind of rule. That's exactly why it works.</p>
-<p>Nigeria has had funds and accounts too. The trouble is they've rarely been protected from the next emergency, the next election or the next shortfall. A rule that bends whenever it's inconvenient isn't a rule.</p>
-<p>Africa doesn't need to copy Norway line by line. But it should copy the idea: take the windfall out of reach of the short term, and make spending it hard on purpose.</p>`},
-{slug:"power",title:"Nigeria Doesn't Have a Power Problem",dek:"It has a system problem that shows up as darkness.",tags:["Infrastructure","Africa"],date:"Sep 9, 2026",read:4,body:`
-<p class="lead">Ask anyone in Nigeria about electricity and you'll get a laugh before you get an answer. We've got gas, sun, rivers and smart engineers. So why do so many homes and businesses still run on generators?</p>
-<p>Because generation is only one link. The power has to be moved, sold, metered and paid for. If any link loses money, the whole chain slows down. Distribution companies don't collect enough. Generators don't get paid in full. Gas suppliers don't either. Everyone waits on everyone.</p>
-<p>So the fix isn't one more power plant. It's making every link worth running. Clear ownership, real prices, meters that work, and a reason for each player to want the next one to succeed.</p>
-<p>This is the problem I'm spending most of my thinking time on right now. I'll write more as I learn more.</p>`},
-{slug:"decades",title:"Thinking in Decades",dek:"Why I plan in ten-year blocks, and what that changes.",tags:["Building"],date:"Aug 22, 2026",read:3,body:`
-<p class="lead">Most people plan in quarters. I get why. Quarters are measurable, and you can see progress.</p>
-<p>But the things I care about don't move in quarters. Power grids, universities, currencies and trust in institutions take decades. If you judge them every three months, you'll quit right before they start working.</p>
-<p>So I keep two clocks. A short one for the work in front of me: scripts, clients, shipping. And a long one for the plan: build, come home, invest, found something that outlives me.</p>
-<p>The short clock pays for the long one. The long clock tells me which short-term work is worth doing.</p>`}
-];
-const TOPICS=[...new Set(POSTS.flatMap(p=>p.tags))];
+const S=typeof SITE!=="undefined"?SITE:{},P=(typeof POSTS!=="undefined"?POSTS:[]).filter(p=>p&&p.title);
 const $=s=>document.querySelector(s);
-const tagHtml=p=>`<div class="tags">${p.tags.map(t=>`<span>${t}</span>`).join("")}</div>`;
-const row=(p,dek)=>`<li><a href="#post-${p.slug}">${tagHtml(p)}<h3>${p.title}</h3>${dek?`<p>${p.dek}</p>`:""}<div class="meta"><span>${p.date}</span><span>${p.read} min read</span></div></a></li>`;
-let shown=4;
-function drawHome(){$("#home-posts").innerHTML=POSTS.slice(0,shown).map(p=>row(p,true)).join("");$("#more").hidden=shown>=POSTS.length;}
-$("#more").onclick=()=>{shown+=4;drawHome();};
-drawHome();
-$("#home-topics").innerHTML=TOPICS.map(t=>`<a class="chip" href="#archive" data-topic="${t}">${t}</a>`).join("");
-let filter="All";
-function drawArchive(){
-  $("#filters").innerHTML=["All",...TOPICS].map(t=>`<button class="chip ${t===filter?"on":""}" data-f="${t}">${t}</button>`).join("");
-  $("#archive-posts").innerHTML=POSTS.filter(p=>filter==="All"||p.tags.includes(filter)).map(p=>row(p,false)).join("");
-}
-document.addEventListener("click",e=>{
-  const f=e.target.closest("[data-f]");if(f){filter=f.dataset.f;drawArchive();}
-  const t=e.target.closest("[data-topic]");if(t){filter=t.dataset.topic;drawArchive();}
-});
-drawArchive();
+const esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+P.forEach((p,i)=>{p.slug=p.slug||("post-"+(i+1));p.tags=p.tags||[];const w=(p.body||"").trim().split(/\s+/).filter(Boolean).length;p.read=Math.max(1,Math.round(w/220));});
 
+/* tiny text formatter: blank line = new paragraph */
+function inline(t){return esc(t).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>").replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+|mailto:[^)\s]+|#[^)\s]*)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');}
+function fmt(t){
+  t=String(t||"").replace(/\r/g,"").trim();if(!t)return"";
+  return t.split(/\n\s*\n/).map(b=>{
+    const lines=b.split("\n").map(l=>l.trim()).filter(Boolean);
+    if(lines.every(l=>/^- /.test(l)))return"<ul>"+lines.map(l=>"<li>"+inline(l.slice(2))+"</li>").join("")+"</ul>";
+    if(lines.every(l=>/^> ?/.test(l)))return"<blockquote>"+inline(lines.map(l=>l.replace(/^> ?/,"")).join(" "))+"</blockquote>";
+    if(/^### /.test(lines[0]))return"<h3>"+inline(lines[0].slice(4))+"</h3>"+(lines.length>1?"<p>"+inline(lines.slice(1).join(" "))+"</p>":"");
+    if(/^## /.test(lines[0]))return"<h2>"+inline(lines[0].slice(3))+"</h2>"+(lines.length>1?"<p>"+inline(lines.slice(1).join(" "))+"</p>":"");
+    return"<p>"+lines.map(inline).join("<br>")+"</p>";
+  }).join("");
+}
+const head=(t,sub)=>`<div class="pagehead"><h1>${esc(t)}</h1>${sub?`<p>${esc(sub)}</p>`:""}</div>`;
+const empty=t=>`<p class="empty anim">${t}</p>`;
+const tagHtml=p=>p.tags.length?`<div class="tags">${p.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:"";
+const row=(p,sum)=>`<li class="anim"><a href="#post-${esc(p.slug)}">${tagHtml(p)}<h3>${esc(p.title)}</h3>${sum&&p.summary?`<p>${esc(p.summary)}</p>`:""}<div class="meta">${p.date?`<span>${esc(p.date)}</span>`:""}<span>${p.read} min read</span></div></a></li>`;
+const TOPICS=[...new Set(P.flatMap(p=>p.tags))];
+const H=S.home||{};
+
+/* ---------- build views ---------- */
+let html="";
+const words=(H.rotatingWords||[]).filter(Boolean);
+html+=`<section class="view" id="v-home"><div class="pagehead hero">${H.greeting?`<div class="hello anim">${esc(H.greeting)}</div>`:""}<h1 data-nosplit class="anim">${esc(H.headline||"")}${words.length?` <span class="rot" id="rot">${words.map((w,i)=>`<span class="${i?"":"on"}">${esc(w)}</span>`).join("")}</span>`:""}</h1>${H.subtitle?`<p class="anim">${esc(H.subtitle)}</p>`:""}</div>`;
+const tp=(H.scrollingTopics||[]).filter(Boolean);
+if(tp.length){const s=tp.map(t=>`<span>${esc(t)}</span>`).join("");html+=`<div class="marquee" aria-hidden="true"><div class="track">${s}${s}</div></div>`;}
+if(P.length){
+  html+=`${H.postsHeading?`<h2 class="label">${esc(H.postsHeading)}</h2>`:""}<ul class="posts" id="home-posts"></ul><button class="soft anim" id="more">Load More</button>`;
+  if(TOPICS.length)html+=`<h2 class="sec anim">Topics</h2><div class="chips anim">${TOPICS.map(t=>`<a class="chip" href="#archive" data-topic="${esc(t)}">${esc(t)}</a>`).join("")}</div>`;
+}
+const PR=(S.projects||[]).filter(p=>p&&p.name);
+if(PR.length)html+=`<h2 class="sec anim">Projects</h2><div class="build">${PR.map(p=>`<div class="bcard anim">${p.label?`<small>${esc(p.label)}</small>`:""}<h3>${esc(p.name)}</h3>${p.text?`<p>${esc(p.text)}</p>`:""}</div>`).join("")}</div>`;
+html+=`</section>`;
+
+const N=S.now||{};
+html+=`<section class="view" id="v-now">${head("Now")}<div class="prose">${N.updated?`<p class="anim">Last updated: ${esc(N.updated)}</p>`:""}${fmt(N.text)||empty("Coming soon.")}</div></section>`;
+html+=`<section class="view" id="v-about">${head("About")}<div class="prose">${fmt((S.about||{}).text)||empty("Coming soon.")}</div></section>`;
+html+=`<section class="view archive" id="v-archive">${head("Archive")}${P.length?`${TOPICS.length?`<div class="chips anim" id="filters" style="margin:8px 0"></div>`:""}<ul class="posts" id="archive-posts"></ul>`:empty("No posts yet.")}</section>`;
+
+const R=S.resources||{},B=(R.books||[]).filter(b=>b&&b.title),T=(R.tools||[]).filter(t=>t&&t.name);
+html+=`<section class="view" id="v-resources">${head("Resources")}<div class="prose">${fmt(R.intro)}</div>`;
+if(B.length)html+=`<h2 class="sec anim" style="font-size:16px;margin-top:32px">Books I recommend:</h2>${B.map(b=>`<div class="res anim"><div class="cover">${esc(b.title)}</div><div><h3>${esc(b.title)}</h3>${b.author?`<div class="by">by ${esc(b.author)}</div>`:""}${b.note?`<p>${esc(b.note)}</p>`:""}</div></div>`).join("")}`;
+if(T.length)html+=`<h2 class="sec anim" style="font-size:16px">Tools I use:</h2>${T.map(t=>`<div class="tool anim"><b><i></i>${esc(t.name)}</b><span>${esc(t.use||"")}</span></div>`).join("")}`;
+if(!B.length&&!T.length&&!R.intro)html+=empty("Coming soon.");
+html+=`</section>`;
+
+const C=S.contact||{};
+html+=`<section class="view" id="v-contact">${head("Contact")}<div class="prose">${fmt(C.intro)}</div>${C.email?`<form id="form" class="anim" style="margin-top:36px"><label for="f-name">Name</label><input id="f-name" required placeholder="Your name"><label for="f-email">Email</label><input id="f-email" type="email" required placeholder="you@email.com"><label for="f-msg">Message</label><textarea id="f-msg" required placeholder="Your message"></textarea><button class="sendbtn" type="submit">Send Message</button><div class="note" id="note"></div></form>`:(C.intro?"":empty("Coming soon."))}</section>`;
+
+html+=`<section class="view" id="v-post"><article id="article"></article></section>`;
+const HP=(S.hiddenPages||[]).filter(p=>p&&p.slug);
+HP.forEach(p=>{html+=`<section class="view" id="v-${esc(p.slug)}" data-hidden>${head(p.title||"")}<div class="prose">${fmt(p.text)}</div></section>`;});
+
+const st=(S.stayInTouch||{}).text;
+if(st&&C.email)html+=`<section class="touch" id="touch"><h2>Stay in touch</h2><p>${esc(st)}</p><form class="sub" id="subform"><input id="sub-email" type="email" required placeholder="name@email.com" aria-label="Your email"><button type="submit">Subscribe</button></form><div class="note" id="subnote"></div></section>`;
+$("#main").innerHTML=html;
+
+/* header, footer, wordmark */
+const logo=S.logo||"";$("#logo").textContent=logo;
+$("#wordmark").innerHTML=[...logo].map((c,i)=>`<span style="transition-delay:${i*.06}s">${esc(c)}</span>`).join("");
+$("#foot").textContent=S.footer||"";
+$("#footlinks").innerHTML=(S.links||[]).filter(l=>l&&l.label&&l.url).map(l=>`<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("");
+if(S.description)document.querySelector('meta[name=description]').content=S.description;
+
+/* lists */
+let shown=6,filter="All";
+function drawHome(){const el=$("#home-posts");if(!el)return;el.innerHTML=P.slice(0,shown).map(p=>row(p,true)).join("");$("#more").hidden=shown>=P.length;}
+function drawArchive(){const f=$("#filters");if(f)f.innerHTML=["All",...TOPICS].map(t=>`<button class="chip ${t===filter?"on":""}" data-f="${esc(t)}">${esc(t)}</button>`).join("");const a=$("#archive-posts");if(a)a.innerHTML=P.filter(p=>filter==="All"||p.tags.includes(filter)).map(p=>row(p,false)).join("");}
+if($("#more"))$("#more").onclick=()=>{shown+=6;drawHome();};
+drawHome();drawArchive();
+document.addEventListener("click",e=>{const f=e.target.closest("[data-f]");if(f){filter=f.dataset.f;drawArchive();}const t=e.target.closest("[data-topic]");if(t){filter=t.dataset.topic;drawArchive();}});
+
+/* routing */
 function show(){
-  const h=(location.hash||"#home").slice(1);
-  if(h==="books"||h==="tools")return;
-  let v=h.startsWith("post-")?"post":h;
+  const h=decodeURIComponent((location.hash||"#home").slice(1));
+  let v=h.startsWith("post-")&&P.some(p=>"post-"+p.slug===h)?"post":h;
   if(!document.getElementById("v-"+v))v="home";
   document.querySelectorAll(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
   document.querySelectorAll("nav.links a").forEach(a=>a.classList.toggle("on",a.dataset.v===v));
-  $("#touch").hidden=(v==="contact"||v==="scripts"||v==="ads");
+  const touch=$("#touch");if(touch)touch.hidden=(v==="contact"||!!document.querySelector("#v-"+CSS.escape(v)+"[data-hidden]"));
   if(v==="post"){
-    const i=Math.max(0,POSTS.findIndex(x=>"post-"+x.slug===h)),p=POSTS[i],prev=POSTS[i-1],next=POSTS[i+1];
-    const others=POSTS.filter(x=>x!==p).slice(0,4);
-    $("#article").innerHTML=`<div class="crumb"><a href="#home">Home</a> &gt; <a href="#archive">All Posts</a></div>${tagHtml(p)}<h1>${p.title}</h1><div class="meta"><span>${p.date}</span><span>${p.read} min read</span></div><div class="prose">${p.body}</div>
-    <div class="pn">${prev?`<a href="#post-${prev.slug}"><small>Previous</small><span>${prev.title}</span></a>`:""}${next?`<a class="next" href="#post-${next.slug}"><small>Next</small><span>${next.title}</span></a>`:""}</div>
-    <h2 class="sec" style="color:var(--text)">You might also like:</h2><ul class="also">${others.map(o=>`<li><a href="#post-${o.slug}"><b>${o.title}</b><span>${o.read} min read</span></a></li>`).join("")}</ul>`;
-    document.title=p.title+" | zuko.";
-  } else document.title="Zuko Obealor";
-  $("#links").classList.remove("open");$("#menu").classList.remove("open");$("#hdr").classList.remove("menu-open");
-  animate(document.getElementById("v-"+v));
+    const i=P.findIndex(x=>"post-"+x.slug===h),p=P[i],prev=P[i-1],next=P[i+1],others=P.filter(x=>x!==p).slice(0,4);
+    $("#article").innerHTML=`<div class="crumb"><a href="#home">Home</a> &gt; <a href="#archive">All Posts</a></div>${tagHtml(p)}<h1>${esc(p.title)}</h1><div class="meta">${p.date?`<span>${esc(p.date)}</span>`:""}<span>${p.read} min read</span></div><div class="prose">${fmt(p.body)}</div>${prev||next?`<div class="pn">${prev?`<a href="#post-${esc(prev.slug)}"><small>Previous</small><span>${esc(prev.title)}</span></a>`:""}${next?`<a class="next" href="#post-${esc(next.slug)}"><small>Next</small><span>${esc(next.title)}</span></a>`:""}</div>`:""}${others.length?`<h2 class="sec">You might also like:</h2><ul class="also">${others.map(o=>`<li><a href="#post-${esc(o.slug)}"><b>${esc(o.title)}</b><span>${o.read} min read</span></a></li>`).join("")}</ul>`:""}`;
+    document.title=p.title+" | "+(S.tabTitle||"");
+  } else document.title=S.tabTitle||"";
+  setMenu(false);
+  const view=document.getElementById("v-"+v);
+  view.querySelectorAll(".pagehead h1:not([data-nosplit])").forEach(h=>{if(!h.dataset.t)h.dataset.t=h.textContent;let i=0;h.innerHTML=h.dataset.t.split(/(\s+)/).map(w=>/^\s+$/.test(w)?w:`<span class="w" style="--i:${i++}">${esc(w)}</span>`).join("");});
+  let d=0;view.querySelectorAll(".anim,.prose>*,.posts li").forEach(el=>{el.classList.add("anim");el.style.setProperty("--d",Math.min(d++,10));});
+  view.classList.remove("on");void view.offsetWidth;view.classList.add("on");
   window.scrollTo(0,0);
 }
-function animate(view){
-  view.querySelectorAll(".pagehead h1:not([data-nosplit])").forEach(h=>{
-    if(!h.dataset.t)h.dataset.t=h.innerHTML;
-    let i=0;h.innerHTML=h.dataset.t.split(/(\s+)/).map(w=>/^\s+$/.test(w)?w:`<span class="w" style="--i:${i++}">${w}</span>`).join("");
-  });
-  let d=0;view.querySelectorAll(".posts li,.prose>*,.res,.tool,.chips,form,.soft,h2.sec").forEach(el=>el.style.setProperty("--d",Math.min(d++,10)));
-  view.classList.remove("on");void view.offsetWidth;view.classList.add("on");
-  setupReveal(view);
-}
-let io;
-function setupReveal(view){
-  if(!("IntersectionObserver" in window))return;
-  io&&io.disconnect();
-  io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.remove("wait");io.unobserve(e.target);}}),{rootMargin:"0px 0px -8% 0px"});
-  let n=0;
-  view.querySelectorAll(".reveal").forEach(el=>{
-    if(el.getBoundingClientRect().top>innerHeight){el.classList.add("wait");el.style.transitionDelay=(n++%4)*90+"ms";io.observe(el);}
-  });
-}
-const rot=[...document.querySelectorAll("#rot span")];let ri=0;
-setInterval(()=>{
-  if(document.hidden||!$("#v-home").classList.contains("on"))return;
-  const cur=rot[ri];ri=(ri+1)%rot.length;const nx=rot[ri];
-  cur.classList.remove("on");cur.classList.add("out");
-  nx.classList.remove("out");nx.classList.add("on");
-  setTimeout(()=>cur.classList.remove("out"),700);
-},2400);
-const wm=$("#wordmark");
-if("IntersectionObserver" in window){new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)wm.classList.add("in")}),{threshold:.3}).observe(wm);}else wm.classList.add("in");
-$("#totop").onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
-addEventListener("scroll",()=>{
-  const d=document.documentElement,post=$("#v-post").classList.contains("on");
-  $("#totop").classList.toggle("show",d.scrollTop>600);
-  $("#progress").style.transform=`scaleX(${post?Math.min(1,d.scrollTop/Math.max(1,d.scrollHeight-innerHeight)):0})`;
-},{passive:true});
+function setMenu(o){$("#links").classList.toggle("open",o);$("#menu").classList.toggle("open",o);$("#hdr").classList.toggle("menu-open",o);}
+$("#menu").onclick=()=>setMenu(!$("#links").classList.contains("open"));
 addEventListener("hashchange",show);show();
 
-function setMenu(o){$("#links").classList.toggle("open",o);$("#menu").classList.toggle("open",o);$("#hdr").classList.toggle("menu-open",o);$("#menu").setAttribute("aria-expanded",o);}
-$("#menu").onclick=()=>setMenu(!$("#links").classList.contains("open"));
+/* rotating words */
+const rot=[...document.querySelectorAll("#rot span")];let ri=0;
+if(rot.length>1)setInterval(()=>{if(document.hidden)return;const c=rot[ri];ri=(ri+1)%rot.length;const n=rot[ri];c.classList.remove("on");c.classList.add("out");n.classList.remove("out");n.classList.add("on");setTimeout(()=>c.classList.remove("out"),700);},2400);
+
+/* wordmark, back to top, reading bar */
+const wm=$("#wordmark");
+if("IntersectionObserver"in window)new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)wm.classList.add("in")}),{threshold:.3}).observe(wm);else wm.classList.add("in");
+$("#totop").onclick=()=>scrollTo({top:0,behavior:"smooth"});
+addEventListener("scroll",()=>{const d=document.documentElement,post=$("#v-post").classList.contains("on");$("#totop").classList.toggle("show",d.scrollTop>600);$("#progress").style.transform=`scaleX(${post?Math.min(1,d.scrollTop/Math.max(1,d.scrollHeight-innerHeight)):0})`;},{passive:true});
+
+/* theme */
 const root=document.documentElement;
 try{const s=localStorage.getItem("theme");if(s)root.dataset.theme=s;}catch(e){}
-$("#theme").onclick=()=>{
-  const dark=root.dataset.theme?root.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
-  root.dataset.theme=dark?"light":"dark";
-  const b=$("#theme");b.classList.remove("spin");void b.offsetWidth;b.classList.add("spin");
-  try{localStorage.setItem("theme",root.dataset.theme)}catch(e){}
-};
-function mail(subject,body,noteEl){
-  noteEl.textContent="Opening your email app. If nothing opens, email "+EMAIL;
-  location.href=`mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}
-$("#form").addEventListener("submit",e=>{e.preventDefault();mail("Hello from "+$("#f-name").value,$("#f-msg").value+"\n\n"+$("#f-name").value+" ("+$("#f-email").value+")",$("#note"));});
-$("#subform").addEventListener("submit",e=>{e.preventDefault();mail("Subscribe me","Please add "+$("#sub-email").value+" to your list.",$("#subnote"));});
+$("#theme").onclick=()=>{const dark=root.dataset.theme?root.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;root.dataset.theme=dark?"light":"dark";const b=$("#theme");b.classList.remove("spin");void b.offsetWidth;b.classList.add("spin");try{localStorage.setItem("theme",root.dataset.theme)}catch(e){}};
+
+/* forms open the visitor's email app */
+function mail(sub,body,note){note.textContent="Opening your email app...";location.href=`mailto:${C.email}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`;}
+if($("#form"))$("#form").addEventListener("submit",e=>{e.preventDefault();mail("Hello from "+$("#f-name").value,$("#f-msg").value+"\n\n"+$("#f-name").value+" ("+$("#f-email").value+")",$("#note"));});
+if($("#subform"))$("#subform").addEventListener("submit",e=>{e.preventDefault();mail("Subscribe","Please add "+$("#sub-email").value+" to your list.",$("#subnote"));});
 </script>
 </body>
 </html>
